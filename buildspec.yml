@@ -1,0 +1,42 @@
+version: 0.2
+
+env:
+  variables:
+      AWS_ACCOUNT_ID : "020960785416"
+      IMAGE_REPO_NAME : "rova-transaction-service"
+      IMAGE_TAG : "latest"
+
+
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+    commands:
+
+  pre_build:
+    commands:
+        - echo Logging in to Amazon ECR...
+        - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+
+  build:
+    commands:
+        - echo Build started on `date`
+        - echo Build started on `date`
+        - printenv
+        - docker build -t $IMAGE_REPO_NAME --build-arg IMAGE_TAG=$IMAGE_TAG .
+        - docker images -a
+        - echo Building the Docker image...                  
+        - docker tag $IMAGE_REPO_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG        
+        - docker images -a
+      
+      # - command
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG  
+      - echo Writing image definitions file...
+      - printf '[{"name":"rova-account-service","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG > imagedefinitions.json
+artifacts:
+  files:
+    - imagedefinitions.json
