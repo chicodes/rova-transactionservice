@@ -39,7 +39,7 @@ https://www.youtube.com/watch?v=kQ6Zkb6s6mM
 
 ### Link to Postman collection
 
-https://we.tl/t-ZPdn9VyaQk
+https://we.tl/t-08Md14bUp3
 
 ### Link to Swagger documentation
 http://localhost:1837/swagger-ui.html#/
