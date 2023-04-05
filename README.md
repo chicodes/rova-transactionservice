@@ -28,7 +28,7 @@ If you have docker installed, bring up your terminal, navigate to the root direc
 
 * To run the code run the command below--
 
-  docker run -it -p 3393:81 revotransactionservice
+  docker run -it -p 3393:3393 rovatransactionservice
 
 #### Option 2 (Run from IDE)
 
