@@ -24,6 +24,6 @@ WORKDIR /app
 
 COPY --from=build /app/target/transactionservice-0.0.1-SNAPSHOT.jar transactionservice.jar
 
-EXPOSE 3394
+EXPOSE 3393
 
 ENTRYPOINT ["java","-jar","transactionservice.jar"]
