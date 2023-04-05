@@ -74,7 +74,7 @@ public class TransactionServiceImpl implements TransactionService {
             return responseHelper.getResponse(SUCCESS_CODE, SUCCESS, transaction, HttpStatus.CREATED);
         }
         catch (Exception e) {
-            return responseHelper.getResponse(FAILED_CODE, FAILED, e.getStackTrace(), HttpStatus.EXPECTATION_FAILED);
+            return responseHelper.getResponse(FAILED_CODE, FAILED, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
         }
     }
 
