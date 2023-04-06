@@ -14,8 +14,7 @@ import java.util.Map;
 
 @Slf4j
 @RestControllerAdvice
-public class HandleBadRequest {
-
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<RevoResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {

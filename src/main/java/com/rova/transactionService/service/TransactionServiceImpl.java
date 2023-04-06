@@ -98,10 +98,18 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public RevoResponse getTransaction(String id){
 
-        Optional <Transaction> transaction = transactionRepository.findById(Long.valueOf(id));
-        if(!transaction.isPresent())
-            throw new ResourceNotFoundException("Transaction not found");
-        return responseHelper.getResponse(SUCCESS_CODE, SUCCESS, transaction.get(), HttpStatus.OK);
+        try {
+            log.info("Getting transaction");
+            Optional <Transaction> transaction = transactionRepository.findById(Long.valueOf(id));
+            if(!transaction.isPresent())
+                //throw new ResourceNotFoundException("Transaction not found");
+                throw new ResourceNotFoundException("Transactions not found");
+            return responseHelper.getResponse(SUCCESS_CODE, SUCCESS, transaction.get(), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return responseHelper.getResponse(FAILED_CODE, FAILED, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+
     }
 
     private Transaction getCustomerLastTransactions(String id){
@@ -111,18 +119,17 @@ public class TransactionServiceImpl implements TransactionService {
 
     public RevoResponse getCustomerTransactions(String id, int pageNo, int pageSize){
 
-        Page<Transaction> transactions;
-        Pageable paging = PageRequest.of(pageNo, pageSize);
-        transactions = transactionRepository.findByCustomerId(id, paging);
-        if(Objects.isNull(transactions))
-            throw new ResourceNotFoundException("Customer not found");
-        return responseHelper.getResponse(SUCCESS_CODE, SUCCESS, transactions, HttpStatus.OK);
-    }
-
-    private Map<String, String> getHeader(){
-        return Map.of(
-                "Content-Type", "application/json; charset=utf-8",
-                "Accept", "application/json"
-        );
+        try {
+            log.info("Getting customer transaction");
+            Page<Transaction> transactions;
+            Pageable paging = PageRequest.of(pageNo, pageSize);
+            transactions = transactionRepository.findByCustomerId(id, paging);
+            if (transactions.getTotalElements() == 0)
+                throw new ResourceNotFoundException("No transaction for this user");
+            return responseHelper.getResponse(SUCCESS_CODE, SUCCESS, transactions, HttpStatus.OK);
+        }
+        catch (Exception e){
+            return responseHelper.getResponse(FAILED_CODE, FAILED, e.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
     }
 }
