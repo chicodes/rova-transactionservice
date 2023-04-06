@@ -45,18 +45,6 @@ https://we.tl/t-08Md14bUp3
 http://localhost:1837/swagger-ui.html#/
 
 
-### Important points to note
-
-* I added a create a user endpoint because a user needs to exist before a current account can be opened for such user.
-
-* Userid of the existing user is the customer ID and this is what you when you want to push a create bank account request.
-
-* When you create a new bank account and the initial credit is greater than zero, the bank account is created while the transaction is pushed to sqs.
-
-* The transaction service listens for incomming messages. Once message is queud it picks it and saves the transaction attaches the transaction to the user.
-
-* When you try to get details of a user user, the account  service sends a request to the transaction service, the transaction service responds with all the user transactions.
-
 ### Things I would have done better if I had more time
 
 1. I would have written more test cases and ensured I get a test coverage of a minimum of 80 percent
