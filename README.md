@@ -13,7 +13,7 @@
 
 ### Database :
 
-    Mysql Database
+    H2 in-memory Database
 &nbsp;
 
 ### How to run :
